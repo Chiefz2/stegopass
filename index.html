@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StegoPass | Cofre Digital Seguro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">🔒 Stego<span>Pass</span></div>
+            <p>Esteganografia & Criptografia de Dados</p>
+        </header>
+
+        <div class="tabs">
+            <button class="active" onclick="mudarAba('esconder')">CRIAR COFRE</button>
+            <button onclick="mudarAba('ler')">ABRIR COFRE</button>
+        </div>
+
+        <div id="painelEsconder" class="painel">
+            
+            <div class="step drop-zone" id="dropZoneCriar">
+                <label>1. Imagem Base (Arraste ou Clique):</label>
+                <input type="file" id="uploadImagem" accept="image/png">
+                <p class="info-text">Recomendado: Imagens PNG de alta resolução.</p>
+            </div>
+            
+            <div class="step">
+                <label>2. Adicionar Credenciais:</label>
+                
+                <div class="form-senha">
+                    <input type="text" id="inputServico" placeholder="Serviço (Ex: Banco)">
+                    
+                    <div class="senha-wrapper">
+                        <input type="text" id="inputSenha" placeholder="Senha" oninput="checarForca()">
+                        <button onclick="gerarSenhaForte()" class="btn-magic" title="Gerar Senha Forte">🎲</button>
+                    </div>
+
+                    <button onclick="adicionarNaLista()" class="btn-add" title="Adicionar à lista">+</button>
+                </div>
+
+                <div class="barra-forca"><div id="forcaValor"></div></div>
+                <p id="textoForca">Digite uma senha...</p>
+                
+                <ul id="listaVisual" class="lista-senhas"></ul>
+            </div>
+
+            <div class="step">
+                <label style="color: #ff0055;">3. Proteção (Senha Mestra):</label>
+                <input type="password" id="senhaMestraEnc" placeholder="PIN de Segurança">
+            </div>
+
+            <button onclick="gerarCofre()" class="btn-action">🔒 CRIPTOGRAFAR E BAIXAR</button>
+            
+            <div id="areaDownload" class="hidden">
+                <div class="success-box">
+                    <p>✅ Cofre Gerado com Sucesso!</p>
+                    <small id="hashGerado">Integridade: ...</small>
+                </div>
+                <canvas id="canvasEsconder"></canvas>
+                <a id="btnDownload" download="cofre_seguro.png" class="btn-download">BAIXAR IMAGEM COFRE</a>
+            </div>
+        </div>
+
+        <div id="painelLer" class="painel hidden">
+            
+            <div class="step drop-zone" id="dropZoneLer">
+                <label>Carregue sua Imagem-Cofre:</label>
+                <input type="file" id="uploadLer" accept="image/png">
+            </div>
+            
+            <div class="step">
+                <label style="color: #ff0055;">Senha Mestra para Descriptografar:</label>
+                <input type="password" id="senhaMestraDec" placeholder="Digite o PIN...">
+            </div>
+            
+            <button onclick="lerCofre()" class="btn-action">🔓 ACESSAR DADOS</button>
+            
+            <div class="resultado-box hidden" id="resultadoLer">
+                <h3>🔓 DADOS DECIFRADOS:</h3>
+                <small id="hashLido">Integridade Validada</small>
+                <ul id="listaRecuperada" class="lista-senhas"></ul>
+            </div>
+            
+            <canvas id="canvasLer" style="display:none;"></canvas>
+        </div>
+
+    </div>
+
+    <div class="panic-zone">
+        <button onclick="ativarPanico()" title="Emergência: Destruir Dados (ESC)">☢️ PANIC</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
