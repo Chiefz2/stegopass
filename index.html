@@ -3,95 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StegoPass | Cofre Digital Seguro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>StegoPass v3.0 - Cofre Digital</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <div class="logo">🔒 Stego<span>Pass</span></div>
-            <p>Esteganografia & Criptografia de Dados</p>
-        </header>
+    <button class="help-btn" onclick="openModal()" aria-label="Abrir manual de instruções e explicação sobre o sistema">?</button>
 
-        <div class="tabs">
-            <button class="active" onclick="mudarAba('esconder')">CRIAR COFRE</button>
-            <button onclick="mudarAba('ler')">ABRIR COFRE</button>
-        </div>
-
-        <div id="painelEsconder" class="painel">
+    <div id="welcomeModal" class="modal-overlay" role="dialog" aria-labelledby="modalTitle">
+        <div class="modal-content" style="max-width: 650px;"> <button class="close-modal" onclick="closeModal()" aria-label="Fechar janela">×</button>
             
-            <div class="step drop-zone" id="dropZoneCriar">
-                <label>1. Imagem Base (Arraste ou Clique):</label>
-                <input type="file" id="uploadImagem" accept="image/png">
-                <p class="info-text">Recomendado: Imagens PNG de alta resolução.</p>
-            </div>
+            <h2 id="modalTitle" class="modal-title" style="border-bottom: 1px solid #333; padding-bottom: 10px;">🔐 Entendendo o StegoPass</h2>
             
-            <div class="step">
-                <label>2. Adicionar Credenciais:</label>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
                 
-                <div class="form-senha">
-                    <input type="text" id="inputServico" placeholder="Serviço (Ex: Banco)">
-                    
-                    <div class="senha-wrapper">
-                        <input type="text" id="inputSenha" placeholder="Senha" oninput="checarForca()">
-                        <button onclick="gerarSenhaForte()" class="btn-magic" title="Gerar Senha Forte">🎲</button>
-                    </div>
-
-                    <button onclick="adicionarNaLista()" class="btn-add" title="Adicionar à lista">+</button>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #00ff88; margin-bottom: 5px;">O que é isso?</h3>
+                    <p>O <strong>StegoPass</strong> é uma ferramenta de segurança que transforma imagens comuns em cofres digitais. Diferente de um cofre normal que todo mundo vê que está trancado, este utiliza uma técnica chamada <strong>Esteganografia</strong> para esconder que existe um segredo ali.</p>
                 </div>
 
-                <div class="barra-forca"><div id="forcaValor"></div></div>
-                <p id="textoForca">Digite uma senha...</p>
-                
-                <ul id="listaVisual" class="lista-senhas"></ul>
-            </div>
-
-            <div class="step">
-                <label style="color: #ff0055;">3. Proteção (Senha Mestra):</label>
-                <input type="password" id="senhaMestraEnc" placeholder="PIN de Segurança">
-            </div>
-
-            <button onclick="gerarCofre()" class="btn-action">🔒 CRIPTOGRAFAR E BAIXAR</button>
-            
-            <div id="areaDownload" class="hidden">
-                <div class="success-box">
-                    <p>✅ Cofre Gerado com Sucesso!</p>
-                    <small id="hashGerado">Integridade: ...</small>
+                <div style="margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;">
+                    <h3 style="color: #00ff88; margin-bottom: 5px;">Como a mágica acontece?</h3>
+                    <p>Imagine que cada ponto colorido (pixel) da sua foto é um número. O StegoPass pega a sua senha, embaralha ela usando uma chave matemática (o seu PIN) e guarda os pedacinhos dessa senha mudando levemente a cor dos pixels azuis da imagem.</p>
+                    <p style="font-size: 0.9rem; color: #aaa; margin-top: 5px;"><em>👁️ Para o olho humano, a foto continua igual. Para o computador, ela agora carrega seus dados secretos.</em></p>
                 </div>
-                <canvas id="canvasEsconder"></canvas>
-                <a id="btnDownload" download="cofre_seguro.png" class="btn-download">BAIXAR IMAGEM COFRE</a>
-            </div>
-        </div>
 
-        <div id="painelLer" class="painel hidden">
-            
-            <div class="step drop-zone" id="dropZoneLer">
-                <label>Carregue sua Imagem-Cofre:</label>
-                <input type="file" id="uploadLer" accept="image/png">
-            </div>
-            
-            <div class="step">
-                <label style="color: #ff0055;">Senha Mestra para Descriptografar:</label>
-                <input type="password" id="senhaMestraDec" placeholder="Digite o PIN...">
-            </div>
-            
-            <button onclick="lerCofre()" class="btn-action">🔓 ACESSAR DADOS</button>
-            
-            <div class="resultado-box hidden" id="resultadoLer">
-                <h3>🔓 DADOS DECIFRADOS:</h3>
-                <small id="hashLido">Integridade Validada</small>
-                <ul id="listaRecuperada" class="lista-senhas"></ul>
-            </div>
-            
-            <canvas id="canvasLer" style="display:none;"></canvas>
-        </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #00ff88; margin-bottom: 5px;">📝 Como usar (Passo a Passo)</h3>
+                    <ol style="line-height: 1.6; margin-left: 20px;">
+                        <li><strong>Escolha o Recipiente:</strong> Na aba "Guardar", arraste uma imagem <strong>PNG</strong> (tem que ser PNG para não perder qualidade).</li>
+                        <li><strong>Adicione os Segredos:</strong> Digite o nome do serviço (ex: Instagram) e a senha que quer guardar.</li>
+                        <li><strong>Tranque o Cofre:</strong> Crie um <strong>PIN Mestre</strong>. Essa é a chave principal. Sem ela, nem você abre o cofre depois.</li>
+                        <li><strong>Baixe a Foto:</strong> O site vai gerar uma nova imagem ("vault.png"). Salve-a. Ela é o seu cofre.</li>
+                        <li><strong>Para Ler:</strong> Vá na aba "Recuperar", suba essa imagem que você baixou e digite o mesmo PIN.</li>
+                    </ol>
+                </div>
 
+                <div>
+                    <h3 style="color: #00ff88; margin-bottom: 5px;">🛡️ É seguro?</h3>
+                    <p>Sim. Todo o processo acontece <strong>no seu navegador (Offline)</strong>. Nenhuma imagem ou senha é enviada para a internet. Além disso, se alguém pegar sua foto mas não souber o PIN, os dados são apenas lixo matemático ilegível.</p>
+                </div>
+
+            </div>
+            
+            <button class="modal-action-btn" onclick="closeModal()">Entendi, vamos começar!</button>
+        </div>
     </div>
 
-    <div class="panic-zone">
-        <button onclick="ativarPanico()" title="Emergência: Destruir Dados (ESC)">☢️ PANIC</button>
+    <div class="container" role="main">
+        <header class="header">
+            <h1>StegoPass</h1>
+            <p>Seu banco de senhas invisível</p>
+        </header>
+
+        <nav class="tabs" role="tablist">
+            <button class="tab-btn active" onclick="switchTab('encrypt')" role="tab" aria-selected="true">🔒 Guardar Senhas</button>
+            <button class="tab-btn" onclick="switchTab('decrypt')" role="tab" aria-selected="false">🔓 Recuperar Senhas</button>
+        </nav>
+
+        <section id="encrypt-section" class="content-section active">
+            
+            <div class="upload-area" id="drop-zone-enc" aria-label="Área de upload de imagem">
+                <p id="upload-text-enc">Arraste ou clique para adicionar uma imagem PNG</p>
+                <input type="file" id="imageInputEnc" accept="image/png" hidden>
+            </div>
+            
+            <div id="preview-container-enc" class="preview-box" style="display: none;">
+                <p style="color: #00ff88; font-weight: bold;">✓ Imagem carregada com sucesso!</p>
+            </div>
+
+            <div class="form-group">
+                <label for="service">Serviço / Site:</label>
+                <input type="text" id="service" placeholder="Ex: E-mail, Banco, Facebook">
+                
+                <label for="password">Senha a ser guardada:</label>
+                <div class="password-row">
+                    <div class="input-wrapper">
+                        <input type="password" id="password" placeholder="Digite a senha aqui" 
+                               oninput="checkStrength(this.value)" 
+                               onkeydown="checkCapsLock(event, 'caps-warn-1')">
+                        <span class="toggle-pass" onclick="toggleVisibility('password')" title="Mostrar/Ocultar Senha">👁️</span>
+                    </div>
+                </div>
+                <div id="caps-warn-1" class="caps-warning">⚠️ ATENÇÃO: Caps Lock Ativado!</div>
+                
+                <div class="strength-meter"><div id="strength-bar" class="strength-bar"></div></div>
+                <small id="strength-text" style="color:#aaa;">Força da senha</small>
+
+                <button class="action-btn secondary" onclick="addCredential()">+ Adicionar à lista</button>
+            </div>
+
+            <div class="credentials-list" id="temp-list" aria-live="polite"></div>
+
+            <div class="master-section">
+                <label for="masterPinEnc">🔑 Crie seu PIN Mestre (Não esqueça!):</label>
+                <div class="input-wrapper">
+                    <input type="password" id="masterPinEnc" placeholder="Digite um código numérico ou palavra" onkeydown="checkCapsLock(event, 'caps-warn-2')">
+                    <span class="toggle-pass" onclick="toggleVisibility('masterPinEnc')" title="Mostrar/Ocultar PIN">👁️</span>
+                </div>
+                <div id="caps-warn-2" class="caps-warning">⚠️ ATENÇÃO: Caps Lock Ativado!</div>
+                
+                <button class="action-btn primary" onclick="processEncrypt()">🛡️ Gerar Foto Protegida</button>
+            </div>
+        </section>
+
+        <section id="decrypt-section" class="content-section">
+            <div class="upload-area" id="drop-zone-dec" aria-label="Área de upload da imagem cofre">
+                <p id="upload-text-dec">Arraste ou clique para adicionar a imagem do cofre</p>
+                <input type="file" id="imageInputDec" accept="image/png" hidden>
+            </div>
+            
+            <div class="master-section">
+                <label for="masterPinDec">🔑 Qual o PIN deste cofre?</label>
+                <div class="input-wrapper">
+                    <input type="password" id="masterPinDec" placeholder="Digite o PIN usado na criação">
+                    <span class="toggle-pass" onclick="toggleVisibility('masterPinDec')" title="Mostrar/Ocultar PIN">👁️</span>
+                </div>
+                <button class="action-btn primary" onclick="processDecrypt()">🔓 Revelar Minhas Senhas</button>
+            </div>
+            
+            <div id="result-area" class="result-box" style="display: none;">
+                <h3 style="color: #00ff88; margin-bottom: 10px;">Suas senhas recuperadas:</h3>
+                <div id="decrypted-content"></div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>StegoPass v3.0 - Projeto de Segurança</p>
+            <button id="panic-btn" onclick="panicMode()" aria-label="Botão de Pânico: Apaga tudo e recarrega a página">☢️ APAGAR TUDO (ESC)</button>
+        </footer>
     </div>
 
     <script src="script.js"></script>
