@@ -3,7 +3,7 @@
 Ferramenta de Segurança da Informação que utiliza Esteganografia e Criptografia Simétrica (XOR) para ocultar credenciais dentro de imagens PNG. O processamento é 100% *Client-Side*, garantindo que os dados sensíveis nunca saem do navegador do utilizador.
 
 ## 🔗 Acesso à Aplicação
-[Substitua este texto pelo link do GitHub Pages gerado para o Stegopass]
+[https://chiefz2.github.io/stegopass/]
 
 ## 🚀 Funcionalidades
 - **Esteganografia em PNG:** Ocultação de texto (palavras-passe, chaves, mensagens) nos bits de píxeis de uma imagem sem alterar a sua aparência visual.
